@@ -3,14 +3,16 @@ import {
   Code2,
   Layers3,
   Link,
-  Menu,
   Sparkles,
-  X,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { CurvedLoop } from './components/CurvedLoop'
+import StaggeredMenu from './components/StaggeredMenu'
+import GridMotion from './components/GridMotion'
 import { ProjectSlider } from './components/ProjectSlider'
 import { SectionLabel } from './components/SectionLabel'
+import SplitText from './components/SplitText'
+import TargetCursor from './components/TargetCursor'
 import {
   achievements,
   certifications,
@@ -24,7 +26,6 @@ import {
 } from './data/portfolio'
 
 function App() {
-  const [menuOpen, setMenuOpen] = useState(false)
   const [hiddenNav, setHiddenNav] = useState(false)
 
   useEffect(() => {
@@ -60,57 +61,70 @@ function App() {
     }
   }, [])
 
-  const navLinks = [
-    { href: '#about', label: 'About' },
-    { href: '#work', label: 'Work' },
-    { href: '#skills', label: 'Skills' },
-    { href: '#contact', label: 'Contact' },
-  ]
-
-  const closeMenu = () => setMenuOpen(false)
-
   return (
     <main>
-      <header className={`site-header ${hiddenNav ? 'site-header-hidden' : ''}`}>
-        <a href="#top" className="brand" onClick={closeMenu}>
-          H.H.U
-        </a>
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          {navLinks.map((link) => (
-            <a key={link.href} href={link.href}>
-              {link.label}
-            </a>
-          ))}
-        </nav>
-        <button
-          className="icon-button mobile-menu-button"
-          type="button"
-          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          {menuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
-      </header>
-
-      <div className={`mobile-nav ${menuOpen ? 'mobile-nav-open' : ''}`}>
-        {navLinks.map((link) => (
-          <a key={link.href} href={link.href} onClick={closeMenu}>
-            {link.label}
-          </a>
-        ))}
-      </div>
+      <TargetCursor 
+        targetSelector="a, button, .project-card, .role-card, .skill-panel, .sm-panel-item"
+        spinDuration={2}
+        hideDefaultCursor={true}
+        parallaxOn={true}
+      />
+      
+      <StaggeredMenu
+        isFixed={true}
+        position="right"
+        items={[
+          { label: 'About', ariaLabel: 'Go to about page', link: '#about' },
+          { label: 'Work', ariaLabel: 'View our work', link: '#work' },
+          { label: 'Skills', ariaLabel: 'View our skills', link: '#skills' },
+          { label: 'Contact', ariaLabel: 'Get in touch', link: '#contact' }
+        ]}
+        socialItems={profile.links.map(l => ({ label: l.label, link: l.href }))}
+        displaySocials={true}
+        displayItemNumbering={true}
+        menuButtonColor={hiddenNav ? 'transparent' : '#fff'}
+        openMenuButtonColor="#fff"
+        changeMenuColorOnOpen={false}
+        colors={['#333', '#111']}
+        logoUrl=""
+        accentColor="#555"
+        closeOnClickAway={true}
+      />
 
       <section className="hero-section" id="top">
-        <div className="hero-media" aria-hidden="true">
-          <img src="/assets/hero-lab.png" alt="" />
-          <div className="scanline" />
-        </div>
-        <div className="hero-content">
+        {/* Animated grid background — auto-loads images from /public/assets/projects/background/ */}
+        <GridMotion />
+
+        {/* Scanline texture sits above the grid */}
+        <div className="scanline" style={{ position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none' }} aria-hidden="true" />
+
+        <div className="hero-content" style={{ position: 'relative', zIndex: 4 }}>
           <p className="hero-kicker reveal">Currently building with AI, code, and design</p>
           <h1 aria-label={profile.name}>
-            <span>Hari Harsha</span>
-            <span>Ummidi</span>
+            <SplitText
+              text="HARI"
+              tag="span"
+              className="hero-h1-line block"
+              delay={60}
+              duration={1}
+              textAlign="left"
+            />
+            <SplitText
+              text="HARSHA"
+              tag="span"
+              className="hero-h1-line block"
+              delay={60}
+              duration={1}
+              textAlign="left"
+            />
+            <SplitText
+              text="UMMIDI"
+              tag="span"
+              className="hero-h1-line block"
+              delay={60}
+              duration={1}
+              textAlign="left"
+            />
           </h1>
           <div className="hero-bottom reveal">
             <p>{profile.role}</p>

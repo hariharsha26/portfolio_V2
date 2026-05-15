@@ -15,7 +15,7 @@ export type Education = {
 }
 
 export const profile = {
-  name: 'Hari Harsha Ummidi',
+  name: 'Hari   Harsha Ummidi',
   role: 'AI-Native Developer, Designer Lead, Data Science Student',
   location: 'Visakhapatnam, India',
   intro:
